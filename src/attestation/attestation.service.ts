@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException, BadRequestException } from '@nestjs/common';
+import { Injectable, BadRequestException, UseGuards } from '@nestjs/common';
 import { EAS, SchemaEncoder } from '@ethereum-attestation-service/eas-sdk';
 import { ethers } from 'ethers';
 import { toBigInt } from 'ethers';
@@ -6,6 +6,7 @@ import { Utils } from 'alchemy-sdk';
 import { PrivyService } from '../privy/privy.service';
 import * as communityData from '../data/communityData.json';
 import { ConfigService } from '@nestjs/config';
+import { PrivyGuard } from 'src/privy/privy.guard';
 
 @Injectable()
 export class AttestationService {
@@ -23,15 +24,10 @@ export class AttestationService {
     this.signer = new ethers.Wallet(PRIVATE_KEY, this.provider);
   }
 
+  @UseGuards(PrivyGuard)
   async createAttestation(authorization: string, data: { platform: string; recipient: string; attester: string; signature: string }) {
     const { platform, recipient, attester, signature } = data;
     console.log('communityData', communityData);
-    try {
-      await this.privyService.getPrivyClient().verifyAuthToken(authorization);
-    } catch (error) {
-      console.error('Token verification failed:', error);
-      throw new UnauthorizedException('Token verification failed');
-    }
 
     const communityInfo = communityData[platform as keyof typeof communityData];
     if (!communityInfo) {
