@@ -70,6 +70,33 @@ export class AttestationService {
     return newAttestationUID;
   }
 
+  @UseGuards(PrivyGuard)
+  async revokeAttestation(authorization: string, data: { signature: string; uid: string, address: string }) {
+    const { signature, uid, address } = data;
+
+    const easContractAddress = EAS_CONFIG.EAS_CONTRACT_ADDRESS;
+    const schemaUID = EAS_CONFIG.VOUCH_SCHEMA;
+
+    const eas = new EAS(easContractAddress);
+    await eas.connect(this.signer);
+
+    const expandedSig = Utils.splitSignature(signature);
+
+    const transaction = await eas.revokeByDelegation({
+      schema: schemaUID,
+      data: {
+        uid: uid,
+      },
+      signature: expandedSig,
+      revoker: address,
+      deadline: toBigInt(0)
+    });
+
+    const newAttestationRevoke = await transaction.wait();
+
+    return newAttestationRevoke;
+  }
+
   async getEasNonce(attester: string): Promise<string> {
     if (!attester) {
       throw new BadRequestException('Attester is required');
