@@ -4,7 +4,7 @@ import { ethers } from 'ethers';
 import { toBigInt } from 'ethers';
 import { Utils } from 'alchemy-sdk';
 import { PrivyService } from '../privy/privy.service';
-import communityData from '../data/communityData.json';
+import * as communityData from '../data/communityData.json';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()
@@ -25,7 +25,7 @@ export class AttestationService {
 
   async createAttestation(authorization: string, data: { platform: string; recipient: string; attester: string; signature: string }) {
     const { platform, recipient, attester, signature } = data;
-
+    console.log('communityData', communityData);
     try {
       await this.privyService.getPrivyClient().verifyAuthToken(authorization);
     } catch (error) {
