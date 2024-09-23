@@ -7,6 +7,7 @@ import { PrivyService } from '../privy/privy.service';
 import * as communityData from '../data/communityData.json';
 import { ConfigService } from '@nestjs/config';
 import { PrivyGuard } from 'src/privy/privy.guard';
+import { EAS_CONFIG } from 'src/config/siteConfig';
 
 @Injectable()
 export class AttestationService {
@@ -67,5 +68,18 @@ export class AttestationService {
     console.log('New attestation UID:', newAttestationUID);
 
     return newAttestationUID;
+  }
+
+  async getEasNonce(attester: string): Promise<string> {
+    if (!attester) {
+      throw new BadRequestException('Attester is required');
+    }
+
+    const easContractAddress = EAS_CONFIG.EAS_CONTRACT_ADDRESS;
+    const eas = new EAS(easContractAddress);
+    await eas.connect(this.signer);
+    const easNonce = await eas.getNonce(attester);
+
+    return easNonce.toString();
   }
 }

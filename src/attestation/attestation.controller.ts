@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Headers, UnauthorizedException, BadRequestException, InternalServerErrorException } from '@nestjs/common';
+import { Controller, Post, Body, Headers, UnauthorizedException, BadRequestException, InternalServerErrorException, Get, Query } from '@nestjs/common';
 import { AttestationService } from './attestation.service';
 
 @Controller('attestation')
@@ -27,5 +27,15 @@ export class AttestationController {
         throw new InternalServerErrorException('Failed to create attestation');
       }
     }
+  }
+
+  @Get('nonce')
+  async getEasNonce(@Query('attester') attester: string) {
+    if (!attester) {
+      throw new BadRequestException('Attester is required');
+    }
+
+    const easNonce = await this.attestationService.getEasNonce(attester);
+    return { easNonce };
   }
 }
