@@ -9,7 +9,7 @@ export class PcdsController {
   @Post()
   @UseGuards(PrivyGuard)
   async handlePost(
-    @Body() body: { pcds: any; user: any },
+    @Body() body: { pcds: any; user: any, signature: string },
     @Headers('x-privy-app-id') appId: string
   ) {
     try {

@@ -9,8 +9,8 @@ import { whitelistedTickets,matchTicketToType } from 'src/config/zupass/zupass-c
 export class PcdsService {
   constructor(private readonly handleAttestService: HandleAttestService) {}
 
-  async validatePCD(body: { pcds: any; user: any }) {
-    const { pcds: inputPCD, user } = body;
+  async validatePCD(body: { pcds: any; user: any, signature: string }) {
+    const { pcds: inputPCD, user, signature } = body;
     let response: { error?: string; status: number; nullifier?: string; attestationUID?: string } = { status: 200 };
 
     try {
@@ -88,8 +88,8 @@ export class PcdsService {
               ).slice(0, 66)
             );
             const category = EAS_CONFIG.CATEGORY;
-            const subcategory = eventName;
-            const issuer = ticketType;
+            const subcategory = ticketType;
+            const issuer = EAS_CONFIG.ISSUER;
             const credentialType = EAS_CONFIG.CREDENTIAL_TYPE;
             const platform = EAS_CONFIG.PLATFORM;
 
@@ -100,7 +100,9 @@ export class PcdsService {
               subcategory,
               issuer,
               credentialType,
-              platform
+              platform,
+              user.wallet.address,
+              signature
             );
 
             response.attestationUID = attestationUID;
