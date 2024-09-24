@@ -23,3 +23,13 @@ export const EAS_CONFIG = {
     PLATFORM: "Zupass",
     CREDENTIAL_TYPE: "Ticket"
 }
+
+// Add this new configuration
+export const ALLOWED_ORIGINS = process.env.NODE_ENV === 'production' ? [
+    'https://app.stamp.network',
+    'https://staging-pass.agora.city/',
+    'https://pass.agora.city/',
+] : [
+    'http://localhost:3000',
+    'http://localhost:3001',
+];
