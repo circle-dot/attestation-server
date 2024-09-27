@@ -15,7 +15,17 @@ export class PcdsService {
     const responses = [];
 
     for (const inputPCD of inputPCDs) {
-      let response: { error?: string; status: number; nullifier?: string; attestationUID?: string } = { status: 200 };
+      let response: { 
+        error?: string; 
+        status: number; 
+        nullifier?: string; 
+        attestationUID?: string;
+        productId?: string;
+        eventId?: string;
+      } = { status: 200 };
+
+      let productId: string | undefined;
+      let eventId: string | undefined;
 
       try {
         console.log("Attempting to process PCD:", JSON.stringify(inputPCD));
@@ -28,7 +38,9 @@ export class PcdsService {
           throw new Error("Invalid PCD structure: missing claim or partialTicket");
         }
 
-        const { eventId, productId } = pcd.claim.partialTicket;
+        ({ productId, eventId } = pcd.claim.partialTicket);
+        response.productId = productId;
+        response.eventId = eventId;
 
         console.log(`Matching ticket type for eventId: ${eventId}, productId: ${productId}`);
         if (!eventId || !productId) {
@@ -53,7 +65,9 @@ export class PcdsService {
         if (!pcd.claim.nullifierHash) {
           response = {
             error: "PCD ticket nullifier has not been defined",
-            status: 401
+            status: 401,
+            productId,
+            eventId
           };
         } else {
           let isValid = false;
@@ -82,7 +96,12 @@ export class PcdsService {
 
           if (!isValid) {
             console.error(`[ERROR] PCD is not signed by Zupass`);
-            response = { error: "PCD is not signed by Zupass", status: 401 };
+            response = { 
+              error: "PCD is not signed by Zupass", 
+              status: 401,
+              productId,
+              eventId
+            };
           } else {
             response.nullifier = pcd.claim.nullifierHash;
 
@@ -113,16 +132,28 @@ export class PcdsService {
               );
 
               response.attestationUID = attestationUID;
+              response.productId = productId;
+              response.eventId = eventId;
               console.log("Attestation created successfully:", attestationUID);
             } catch (attestError) {
               console.error("Error creating attestation:", attestError);
-              response = { error: "Error creating attestation", status: 500 };
+              response = { 
+                error: "Error creating attestation", 
+                status: 500,
+                productId,
+                eventId
+              };
             }
           }
         }
       } catch (error) {
         console.error('Error processing PCD:', error);
-        response = { error: error.message || "Error processing PCD", status: 500 };
+        response = { 
+          error: error.message || "Error processing PCD", 
+          status: 500,
+          productId,
+          eventId
+        };
       }
 
       console.log("Response:", response);
