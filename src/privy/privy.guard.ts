@@ -8,7 +8,7 @@ export class PrivyGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
     const authorization = request.headers['authorization'];
-    const appId = request.headers['x-privy-app-id']; // Custom header to specify the app ID
+    const appId = request.headers['x-privy-app-id'];
 
     if (!authorization) {
       throw new UnauthorizedException('Authorization header is missing');

@@ -13,7 +13,7 @@ export class PcdsController {
     @Headers('x-privy-app-id') appId: string
   ) {
     try {
-      const response = await this.pcdsService.validatePCD(body);
+      const response = await this.pcdsService.validatePCDs(body);
       return response;
     } catch (error) {
       if (error instanceof UnauthorizedException) {
