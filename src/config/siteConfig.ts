@@ -25,11 +25,8 @@ export const EAS_CONFIG = {
 }
 
 // Add this new configuration
-export const ALLOWED_ORIGINS = process.env.NODE_ENV === 'production' ? [
+export const ALLOWED_ORIGINS = [
     'https://app.stamp.network',
     'https://staging-pass.agora.city/',
     'https://pass.agora.city/',
-] : [
-    'http://localhost:3000',
-    'http://localhost:3001',
 ];
