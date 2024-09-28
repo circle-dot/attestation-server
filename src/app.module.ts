@@ -5,12 +5,14 @@ import { PrivyModule } from './privy/privy.module';
 import { PcdsModule } from './pcds/pcds.module';
 import { AppService } from './app.service';
 import { AppController } from './app.controller';
+import { PodModule } from './pod/pod.module';
 @Module({
   imports: [
     ConfigModule.forRoot(),
     PrivyModule,
     AttestationModule,
-    PcdsModule,    
+    PcdsModule,
+    PodModule,    
   ],
   providers: [AppService],
   controllers: [AppController],

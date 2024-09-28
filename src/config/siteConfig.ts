@@ -24,9 +24,18 @@ export const EAS_CONFIG = {
     CREDENTIAL_TYPE: "Ticket"
 }
 
+export const Zupass = {
+    url: "https://zupass.org",
+    issuer: "AgoraPass",
+    zupass_title: "AgoraPass",
+    zupass_display: "collectable",
+    folder: "AGORATEST",
+    zupass_image_url: "https://staging-pass.agora.city/AgoraLogo.png",
+}
+
 // Add this new configuration
 export const ALLOWED_ORIGINS = [
+    'https://staging-pass.agora.city',
+    'https://pass.agora.city',
     'https://app.stamp.network',
-    'https://staging-pass.agora.city/',
-    'https://pass.agora.city/',
 ];
