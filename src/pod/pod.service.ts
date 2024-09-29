@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { POD, podEntriesFromSimplifiedJSON } from "@pcd/pod";
-import { v5 as uuidv5 } from 'uuid';
 import { Zupass, siteName } from 'src/config/siteConfig';
 
 

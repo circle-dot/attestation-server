@@ -7,7 +7,7 @@ export class PodController {
   constructor(private readonly podService: PodService) {}
 
   @Post('create')
-  // @UseGuards(PrivyGuard)
+  @UseGuards(PrivyGuard)
   async createPodpcd(@Body() body: { owner: string; wallet: string }) {
     const { owner, wallet } = body;
     return this.podService.createOrRetrievePodpcd(owner, wallet);
