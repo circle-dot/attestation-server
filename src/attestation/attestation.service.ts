@@ -28,6 +28,12 @@ export class AttestationService {
   @UseGuards(PrivyGuard)
   async createAttestation(authorization: string, data: { platform: string; recipient: string; attester: string; signature: string }) {
     const { platform, recipient, attester, signature } = data;
+
+    // Check if attester and recipient are the same
+    if (attester.toLowerCase() === recipient.toLowerCase()) {
+      throw new BadRequestException("Error: You cannot vouch for yourself.");
+    }
+
     console.log('communityData', communityData);
 
     const communityInfo = communityData[platform as keyof typeof communityData];
