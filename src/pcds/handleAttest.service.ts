@@ -40,22 +40,33 @@ export class HandleAttestService {
       { name: 'platform', value: platform, type: 'bytes32' },
     ]);
 
-    // Create the attestation
-    const tx = await eas.attest({
-      schema: schemaUID,
-      data: {
-        recipient: recipient,
-        expirationTime: 0n,
-        revocable: true,
-        data: encodedData,
-      },
-    });
+    try {
+      // Create the attestation
+      const tx = await eas.attest({
+        schema: schemaUID,
+        data: {
+          recipient: recipient,
+          expirationTime: 0n,
+          revocable: true,
+          data: encodedData,
+        },
+      });
 
-    // Wait for the transaction to be mined and get the attestation UID
-    const newAttestationUID = await tx.wait();
-    console.log('New attestation UID:', newAttestationUID);
+      // Wait for the transaction to be mined and get the attestation UID
+      const newAttestationUID = await tx.wait();
+      console.log('New attestation UID:', newAttestationUID);
 
-    return newAttestationUID;
+      return newAttestationUID;
+    } catch (error) {
+      console.error('Error in handleAttest:', error);
+      if (error.reason) {
+        throw new Error(`Smart contract error: ${error.reason}`);
+      } else if (error.message) {
+        throw new Error(`Attestation error: ${error.message}`);
+      } else {
+        throw new Error('Unknown error occurred during attestation');
+      }
+    }
   }
 }
 

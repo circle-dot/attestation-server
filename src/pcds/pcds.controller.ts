@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Headers, InternalServerErrorException, UnauthorizedException, BadRequestException, UseGuards } from '@nestjs/common';
+import { Controller, Post, Body, UseGuards, Headers, HttpException, HttpStatus, InternalServerErrorException } from '@nestjs/common';
 import { PcdsService } from './pcds.service';
 import { PrivyGuard } from 'src/privy/privy.guard';
 
@@ -16,13 +16,18 @@ export class PcdsController {
       const response = await this.pcdsService.validatePCDs(body);
       return response;
     } catch (error) {
-      if (error instanceof UnauthorizedException) {
-        throw error;
-      } else if (error instanceof BadRequestException) {
+      if (error instanceof HttpException) {
+        // If it's our custom InternalServerErrorException with responses
+        if (error instanceof InternalServerErrorException && Array.isArray(error.getResponse())) {
+          return {
+            statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+            responses: error.getResponse()
+          };
+        }
         throw error;
       } else {
-        console.error('Error processing PCD:', error);
-        throw new InternalServerErrorException('Error processing PCD');
+        console.error('Unexpected error:', error);
+        throw new HttpException('An unexpected error occurred', HttpStatus.INTERNAL_SERVER_ERROR);
       }
     }
   }

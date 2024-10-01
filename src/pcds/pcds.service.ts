@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException, BadRequestException } from '@nestjs/common';
+import { Injectable, UnauthorizedException, BadRequestException, InternalServerErrorException } from '@nestjs/common';
 import { isEqualEdDSAPublicKey } from '@pcd/eddsa-pcd';
 import { ethers } from 'ethers';
 import { EAS_CONFIG } from 'src/config/siteConfig';
@@ -13,6 +13,7 @@ export class PcdsService {
   async validatePCDs(body: { pcds: any[]; user: any }) {
     const { pcds: inputPCDs, user } = body;
     const responses = [];
+    let hasError = false;
 
     for (const inputPCD of inputPCDs) {
       let response: { 
@@ -138,7 +139,7 @@ export class PcdsService {
             } catch (attestError) {
               console.error("Error creating attestation:", attestError);
               response = { 
-                error: "Error creating attestation", 
+                error: attestError.message, // This will now include the specific smart contract error
                 status: 500,
                 productId,
                 eventId
@@ -154,10 +155,19 @@ export class PcdsService {
           productId,
           eventId
         };
+        hasError = true;
+      }
+
+      if (response.status !== 200) {
+        hasError = true;
       }
 
       console.log("Response:", response);
       responses.push(response);
+    }
+
+    if (hasError) {
+      throw new InternalServerErrorException(responses);
     }
 
     return responses;
