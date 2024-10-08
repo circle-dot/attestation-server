@@ -54,13 +54,21 @@ export class PcdsService {
         }
         console.log(`Matched ticket type: ${ticketType}`);
 
-        const eventName = whitelistedTickets[ticketType].find(
+        const matchedTicket = whitelistedTickets[ticketType].find(
           ticket => ticket.eventId === eventId && ticket.productId === productId
-        )?.eventName;
+        );
 
-        if (!eventName) {
-          console.log('Failed to find event name');
-          throw new Error("Unable to determine event name.");
+        if (!matchedTicket) {
+          console.log('Failed to find matching ticket');
+          throw new Error("Unable to find matching ticket.");
+        }
+
+        const eventName = matchedTicket.eventName;
+        const productName = matchedTicket.productName;
+
+        if (!eventName || !productName) {
+          console.log('Failed to find event name or product name');
+          throw new Error("Unable to determine event name or product name.");
         }
 
         if (!pcd.claim.nullifierHash) {
@@ -119,7 +127,7 @@ export class PcdsService {
               const category = EAS_CONFIG.CATEGORY;
               const subcategory = eventName;
               const issuer = ticketType;
-              const credentialType = EAS_CONFIG.CREDENTIAL_TYPE;
+              const credentialType = productName; 
               const platform = EAS_CONFIG.PLATFORM;
 
               const attestationUID = await this.handleAttestService.handleAttest(
