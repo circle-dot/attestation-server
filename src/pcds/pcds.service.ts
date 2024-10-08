@@ -135,6 +135,7 @@ export class PcdsService {
               response.attestationUID = attestationUID;
               response.productId = productId;
               response.eventId = eventId;
+              response.nullifier = nullifier;
               console.log("Attestation created successfully:", attestationUID);
             } catch (attestError) {
               console.error("Error creating attestation:", attestError);
