@@ -23,6 +23,11 @@ export class PcdsService {
         attestationUID?: string;
         productId?: string;
         eventId?: string;
+        // Add new fields to the response type
+        issuer?: string;
+        category?: string;
+        subcategory?: string;
+        platform?: string;
       } = { status: 200 };
 
       let productId: string | undefined;
@@ -140,10 +145,15 @@ export class PcdsService {
                 platform
               );
 
+              // Update the response with all the requested fields
               response.attestationUID = attestationUID;
               response.productId = productId;
               response.eventId = eventId;
               response.nullifier = nullifier;
+              response.issuer = issuer;
+              response.category = category;
+              response.subcategory = subcategory;
+              response.platform = platform;
               console.log("Attestation created successfully:", attestationUID);
             } catch (attestError) {
               console.error("Error creating attestation:", attestError);
