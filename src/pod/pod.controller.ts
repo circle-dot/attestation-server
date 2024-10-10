@@ -1,15 +1,20 @@
-import { Controller, Post, Body, UseGuards } from '@nestjs/common';
+import { Controller, Post, Body, UseGuards, Req } from '@nestjs/common';
 import { PodService } from './pod.service';
 import { PrivyGuard } from '../privy/privy.guard';
+import { Request as ExpressRequest } from 'express';
+import { AuthTokenClaims } from '@privy-io/server-auth';
+
+interface PrivyRequest extends ExpressRequest {
+  privyAuthTokenClaims: AuthTokenClaims;
+}
 
 @Controller('pod')
 export class PodController {
-  constructor(private readonly podService: PodService) {}
+  constructor(private readonly podService: PodService) { }
 
   @Post('create')
   @UseGuards(PrivyGuard)
-  async createPodpcd(@Body() body: { owner: string; wallet: string }) {
-    const { owner, wallet } = body;
-    return this.podService.createOrRetrievePodpcd(owner, wallet);
+  async createPodpcd(@Req() req: PrivyRequest, @Body() body: any) {
+    return this.podService.createOrRetrievePodpcd(req.privyAuthTokenClaims);
   }
 }
