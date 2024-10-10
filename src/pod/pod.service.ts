@@ -6,14 +6,11 @@ import { AuthTokenClaims } from '@privy-io/server-auth';
 export class PodService {
   private readonly ZUPASS_SIGNING_KEY = process.env.ZUPASS_SIGNING_KEY;
 
-  async createOrRetrievePodpcd(authClaims: AuthTokenClaims): Promise<string> {
+  async createOrRetrievePodpcd( wallet: string, AgoraScore: string): Promise<string> {
     if (!this.ZUPASS_SIGNING_KEY) {
       throw new Error('Server configuration error: Signing key not set');
     }
     try {
-      console.log("authClaims:", authClaims);
-      console.log("authClaims.userId", authClaims.userId);
-      
       const pod = POD.sign(
         podEntriesFromSimplifiedJSON(JSON.stringify({
           zupass_display: Zupass.zupass_display,
@@ -21,11 +18,11 @@ export class PodService {
           zupass_image_url: Zupass.zupass_image_url,
           timestamp: new Date().toISOString(),
           issuer: siteName,
-          owner: authClaims.userId,
-          // wallet: wallet
-        })),
+          wallet: wallet,
+          AgoraScore: AgoraScore
+         })),
         this.ZUPASS_SIGNING_KEY
-      );
+       );
       return pod.serialize();
     } catch (error) {
       console.error('Error creating or retrieving POD:', error);

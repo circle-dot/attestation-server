@@ -14,7 +14,8 @@ export class PodController {
 
   @Post('create')
   @UseGuards(PrivyGuard)
-  async createPodpcd(@Req() req: PrivyRequest, @Body() body: any) {
-    return this.podService.createOrRetrievePodpcd(req.privyAuthTokenClaims);
+  async createPodpcd(@Req() req: PrivyRequest, @Body() body: {  wallet: string, AgoraScore: string }) {
+    const { wallet, AgoraScore } = body;
+    return this.podService.createOrRetrievePodpcd( wallet, AgoraScore);
   }
 }
