@@ -1,5 +1,6 @@
 import { Injectable, CanActivate, ExecutionContext, UnauthorizedException } from '@nestjs/common';
 import { PrivyService } from './privy.service';
+import { AuthTokenClaims } from '@privy-io/server-auth';
 
 @Injectable()
 export class PrivyGuard implements CanActivate {
@@ -19,7 +20,11 @@ export class PrivyGuard implements CanActivate {
     }
 
     try {
-      await this.privyService.getPrivyClient(appId).verifyAuthToken(authorization);
+      const authTokenClaims = await this.privyService.getPrivyClient(appId).verifyAuthToken(authorization);
+      
+      // Attach the resolved claims to the request object
+      request.privyAuthTokenClaims = authTokenClaims;
+
       return true;
     } catch (error) {
       console.error(`Token verification failed for app ${appId}:`, error);
