@@ -2,133 +2,67 @@
     "AgoraPass": {
       "id": "AgoraPass",
       "name": "AgoraPass",
-      "schema": "0xfbc2df315b41c1b399470f3f4e5ba5caa772a328bb75d1a20bb5dbac1e75e8e7",
+      "schema": "0xa142412d946732a5a336236267a625ab2bc5c51b9d6f0703317bc979432ced66",
       "chainId": 84532,
-      "endorsementType": "Social",
-      "power": "1",
       "graphql": "https://base-sepolia.easscan.org/graphql",
       "verifyingContract": "0x4200000000000000000000000000000000000021",
-      "description": "Join the solution to decentralize invitations into communities, such as Zuzalu and decrease the dependency on trust in centralized authorities in our community",
-      "members": 42069,
-      "category": "Zuzalu",
-      "roles": [
-        {
-          "name": "Agora Citizen",
-          "members": 41934,
-          "image": "/agorapass.webp",
-          "rewards": ["Be part of the Web of Trust"],
-          "requirements": ["Vouch for someone"]
-        },
-        {
-          "name": "Trusted Citizen",
-          "members": 135,
-          "image": "/agorapass.webp",
-          "rewards": [ "Access to community forums", "Participation in community votes"],
-          "requirements": ["Connect your Zupass", "Have the necessary rank score"]
-        }
-      ],
-      "links": [
-        { "type": "website", "url": "https://pass.agora.city/" },
-        { "type": "twitter", "url": "https://t.co/LDTNJrccMW" }
-      ]
+      "category":"AgoraPass",
+      "subcategory":"",
+      "platform":"Stamp"
     },
     "CreciStamp": {
       "id": "CreciStamp",
       "name": "CreciStamp",
-      "schema": "0xfbc2df315b41c1b399470f3f4e5ba5caa772a328bb75d1a20bb5dbac1e75e8e7",
+      "schema": "0xa142412d946732a5a336236267a625ab2bc5c51b9d6f0703317bc979432ced66",
       "chainId": 84532,
-      "endorsementType": "Social",
-      "power": "1",
       "graphql": "https://base-sepolia.easscan.org/graphql",
       "verifyingContract": "0x4200000000000000000000000000000000000021",
-      "description": "Aleph is convening the worlds brightest minds in Buenos Aires this August to pioneer the first crypto nation.",
-      "members": 35000,
-      "category": "Crecimiento",
-      "roles": [
-        {
-          "name": "Aleph attendee",
-          "members": 34800,
-          "image": "/crecistamp.webp",
-          "rewards": ["Be part of the Web of Trust"],
-          "requirements": ["Vouch for someone"]
-        },
-        {
-          "name": "Aleph Citizen",
-          "members": 200,
-          "image": "/crecistamp.webp",
-          "rewards": ["Access to community channels", "Participation in governance"],
-          "requirements": ["Connect your QuarkId", "Have the necessary rank score"]
-        }
-      ],
-      "links": [
-        { "type": "website", "url": "https://creci.stamp.network/" },
-        { "type": "twitter", "url": "https://x.com/crecimientoar" }
-      ]
+      "category":"CreciStamp",
+      "subcategory":"",
+      "platform":"Stamp"
     },
     "EdgeCity": {
       "id": "EdgeCity",
       "name": "Edge City",
-      "schema": "0xfbc2df315b41c1b399470f3f4e5ba5caa772a328bb75d1a20bb5dbac1e75e8e7",
+      "schema": "0xa142412d946732a5a336236267a625ab2bc5c51b9d6f0703317bc979432ced66",
       "chainId": 84532,
-      "endorsementType": "Social",
-      "power": "1",
       "graphql": "https://base-sepolia.easscan.org/graphql",
       "verifyingContract": "0x4200000000000000000000000000000000000021",
-      "description": "Edge City convenes people working at the frontiers of tech, science, and society in popup villages across the globe. We aspire to be a ‘society and culture incubator’— an IRL lab of experimentation for new ideas, tech, culture, and organizations, all dedicated to accelerating human flourishing.",
-      "members": 42069,
-      "category": "Zuzalu",
-      "roles": [
-        {
-          "name": "Citizen",
-          "members": 41934,
-          "image": "/EdgeLogo.png",
-          "rewards": ["Be part of the Web of Trust"],
-          "requirements": ["Vouch for someone"]
-        },
-        {
-          "name": "Trusted Citizen",
-          "members": 135,
-          "image": "/EdgeLogo.png",
-          "rewards": [ "Access to community forums", "Participation in community votes"],
-          "requirements": ["Connect your Zupass", "Have the necessary rank score"]
-        }
-      ],
-      "links": [
-        { "type": "website", "url": "https://www.edgecity.live" },
-        { "type": "twitter", "url": "https://x.com/JoinEdgeCity" }
-      ]
+      "category":"EdgeCity",
+      "subcategory":"",
+      "platform":"Stamp"
     },
     "BuilderMonastery": {
       "id": "BuilderMonastery",
       "name": "Builder Monastery",
-      "schema": "0xfbc2df315b41c1b399470f3f4e5ba5caa772a328bb75d1a20bb5dbac1e75e8e7",
+      "schema": "0xa142412d946732a5a336236267a625ab2bc5c51b9d6f0703317bc979432ced66",
       "chainId": 84532,
-      "endorsementType": "Social",
-      "power": "1",
       "graphql": "https://base-sepolia.easscan.org/graphql",
       "verifyingContract": "0x4200000000000000000000000000000000000021",
-      "description": "Builder Monastery offers a focused environment where individuals can work on difficult problems. This space fosters collaboration, curiosity, and craftsmanship. Builder Monastery is designed to ensure everyone can engage fully, without fear of missing out on key experiences. ",
-      "members": 42069,
-      "category": "Zuzalu",
-      "roles": [
-        {
-          "name": "Citizen",
-          "members": 41934,
-          "image": "/BuilderMonasteryLogo.png",
-          "rewards": ["Be part of the Web of Trust"],
-          "requirements": ["Vouch for someone"]
-        },
-        {
-          "name": "Trusted Citizen",
-          "members": 135,
-          "image": "/BuilderMonasteryLogo.png",
-          "rewards": [ "Access to community forums", "Participation in community votes"],
-          "requirements": ["Connect your Zupass", "Have the necessary rank score"]
-        }
-      ],
-      "links": [
-        { "type": "website", "url": "https://www.buildermonastery.com" },
-        { "type": "twitter", "url": "https://x.com/b_monastery" }
-      ]
+      "category":"BuilderMonastery",
+      "subcategory":"",
+      "platform":"Stamp"
+    },
+    "Devcon": {
+      "id": "Devcon",
+      "name": "Devcon",
+      "schema": "0xa142412d946732a5a336236267a625ab2bc5c51b9d6f0703317bc979432ced66",
+      "chainId": 84532,
+      "graphql": "https://base-sepolia.easscan.org/graphql",
+      "verifyingContract": "0x4200000000000000000000000000000000000021",
+      "category":"Devcon",
+      "subcategory":"",
+      "platform":"Stamp"
+    },
+    "Test":{
+      "id": "Devcon",
+      "name": "Devcon",
+      "schema": "0xa142412d946732a5a336236267a625ab2bc5c51b9d6f0703317bc979432ced66",
+      "chainId": 84532,
+      "graphql": "https://base-sepolia.easscan.org/graphql",
+      "verifyingContract": "0x4200000000000000000000000000000000000021",
+      "category":"Devcon",
+      "subcategory":"",
+      "platform":"Stamp"
     }
   }

@@ -8,7 +8,7 @@ export class AttestationController {
   @Post()
   async createAttestation(
     @Headers('authorization') authorization: string,
-    @Body() body: { platform: string; recipient: string; attester: string; signature: string }
+    @Body() body: { platform: string; recipient: string; attester: string; signature: string; category:string; subcategory:string; }
   ) {
     if (!authorization) {
       throw new UnauthorizedException('Authorization header missing or invalid');

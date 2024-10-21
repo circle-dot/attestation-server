@@ -26,15 +26,14 @@ export class AttestationService {
   }
 
   @UseGuards(PrivyGuard)
-  async createAttestation(authorization: string, data: { platform: string; recipient: string; attester: string; signature: string }) {
-    const { platform, recipient, attester, signature } = data;
+  async createAttestation(authorization: string, data: { platform: string; recipient: string; attester: string; signature: string; category:string; subcategory:string; }) {
+    const { platform, recipient, attester, signature, category, subcategory } = data;
 
     // Check if attester and recipient are the same
     if (attester.toLowerCase() === recipient.toLowerCase()) {
       throw new BadRequestException("Error: You cannot vouch for yourself.");
     }
 
-    console.log('communityData', communityData);
 
     const communityInfo = communityData[platform as keyof typeof communityData];
     if (!communityInfo) {
@@ -47,11 +46,11 @@ export class AttestationService {
     const eas = new EAS(easContractAddress);
     await eas.connect(this.signer);
 
-    const schemaEncoder = new SchemaEncoder("bytes32 endorsement,bytes32 platform,bytes32 category");
+    const schemaEncoder = new SchemaEncoder("bytes32 platform,bytes32 category,bytes32 subCategory");
     const encodedData = schemaEncoder.encodeData([
-      { name: "endorsement", value: ethers.encodeBytes32String(communityInfo.endorsementType), type: "bytes32" },
       { name: "platform", value: ethers.encodeBytes32String(platform), type: "bytes32" },
-      { name: "category", value: ethers.encodeBytes32String(communityInfo.category), type: "bytes32" }
+      { name: "category", value: ethers.encodeBytes32String(category), type: "bytes32" },
+      { name: "subCategory", value: ethers.encodeBytes32String(subcategory), type: "bytes32" }
     ]);
 
     const expandedSig = Utils.splitSignature(signature);
