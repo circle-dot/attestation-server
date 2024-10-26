@@ -34,10 +34,13 @@ export class AttestationService {
       throw new BadRequestException("Error: You cannot vouch for yourself.");
     }
 
+    const communityKey = `${category}/${subcategory}/${platform}`;
+    const communityInfo = Object.values(communityData).find(
+      info => `${info.category}/${info.subcategory}/${info.platform}` === communityKey
+    );
 
-    const communityInfo = communityData[platform as keyof typeof communityData];
     if (!communityInfo) {
-      throw new BadRequestException('Invalid platform');
+      throw new BadRequestException('Invalid community information');
     }
 
     const easContractAddress = communityInfo.verifyingContract;

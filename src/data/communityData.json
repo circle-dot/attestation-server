@@ -18,7 +18,7 @@
       "graphql": "https://base-sepolia.easscan.org/graphql",
       "verifyingContract": "0x4200000000000000000000000000000000000021",
       "category":"CreciStamp",
-      "subcategory":"",
+      "subcategory":"-",
       "platform":"Stamp"
     },
     "EdgeCity": {
@@ -29,7 +29,7 @@
       "graphql": "https://base-sepolia.easscan.org/graphql",
       "verifyingContract": "0x4200000000000000000000000000000000000021",
       "category":"EdgeCity",
-      "subcategory":"",
+      "subcategory":"-",
       "platform":"Stamp"
     },
     "BuilderMonastery": {
@@ -40,7 +40,7 @@
       "graphql": "https://base-sepolia.easscan.org/graphql",
       "verifyingContract": "0x4200000000000000000000000000000000000021",
       "category":"BuilderMonastery",
-      "subcategory":"",
+      "subcategory":"-",
       "platform":"Stamp"
     },
     "Devcon": {
@@ -51,7 +51,7 @@
       "graphql": "https://base-sepolia.easscan.org/graphql",
       "verifyingContract": "0x4200000000000000000000000000000000000021",
       "category":"Devcon",
-      "subcategory":"",
+      "subcategory":"-",
       "platform":"Stamp"
     },
     "Test":{
@@ -62,7 +62,18 @@
       "graphql": "https://base-sepolia.easscan.org/graphql",
       "verifyingContract": "0x4200000000000000000000000000000000000021",
       "category":"Devcon",
-      "subcategory":"",
+      "subcategory":"-",
       "platform":"Stamp"
+    },
+    "MegaZu": {
+      "id": "MegaZu",
+      "name": "MegaZu",
+      "schema": "0xa142412d946732a5a336236267a625ab2bc5c51b9d6f0703317bc979432ced66",
+      "chainId": 84532,
+      "graphql": "https://base-sepolia.easscan.org/graphql",
+      "verifyingContract": "0x4200000000000000000000000000000000000021",
+      "category": "MegaZu",
+      "subcategory": "-",
+      "platform": "Stamp"
     }
   }
