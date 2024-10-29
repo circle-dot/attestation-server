@@ -28,6 +28,7 @@ export const ticketTypeNames = [
   "ZuVillage",
   "Esmeralda",
   "AgoraCore",
+  "MegaZu24",
   //  "America",
   //  "TestTicket"
 ] as const;
