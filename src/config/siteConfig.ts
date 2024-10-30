@@ -21,7 +21,8 @@ export const EAS_CONFIG = {
     GRAPHQL_URL: process.env.GRAPHQL_URL || "https://base-sepolia.easscan.org/graphql",
     CATEGORY: "Stamp",
     PLATFORM: "Zupass",
-    CREDENTIAL_TYPE: "Ticket"
+    CREDENTIAL_TYPE: "Ticket",
+    VOUCHING_CONTRACT_ADDRESS: process.env.VOUCHING_CONTRACT_ADDRESS || "0x000000AbC3f5670c699C40BF8AEDb99A145524aE"
 }
 
 export const Zupass = {
