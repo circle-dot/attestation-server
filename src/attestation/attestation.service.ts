@@ -8,21 +8,6 @@ import * as communityData from '../data/communityData.json';
 import { ConfigService } from '@nestjs/config';
 import { PrivyGuard } from 'src/privy/privy.guard';
 import { EAS_CONFIG } from 'src/config/siteConfig';
-import { Contract } from 'ethers';
-import axios from 'axios';
-
-interface VouchingSeason {
-  startTimestamp: bigint;
-  endTimestamp: bigint;
-  maxTotalVouches: bigint;
-  totalVouches: bigint;
-}
-
-interface Attestation {
-  attester: string;
-  timeCreated: string;
-  recipient: string;
-}
 
 @Injectable()
 export class AttestationService {
@@ -56,20 +41,6 @@ export class AttestationService {
 
     if (!communityInfo) {
       throw new BadRequestException('Invalid community information');
-    }
-
-    // Check if the attester has already vouched for this recipient
-    const hasVouched = await this.hasAlreadyVouched(
-      attester,
-      recipient,
-      communityInfo.schema,
-      category,
-      subcategory,
-      platform
-    );
-
-    if (hasVouched) {
-      throw new BadRequestException('You have already vouched for this user in this season');
     }
 
     const easContractAddress = communityInfo.verifyingContract;
@@ -145,97 +116,5 @@ export class AttestationService {
     const easNonce = await eas.getNonce(attester);
 
     return easNonce.toString();
-  }
-
-  async getCurrentSeason(): Promise<VouchingSeason> {
-    const vouchingContract = new Contract(
-      EAS_CONFIG.VOUCHING_CONTRACT_ADDRESS,
-      [
-        'function currentSeason() view returns (uint256)',
-        'function vouchingSeasons(uint256) view returns (uint256, uint256, uint256, uint256)'
-      ],
-      this.provider
-    );
-    
-    const seasonNumber = await vouchingContract.currentSeason();
-    const currentSeason = await vouchingContract.vouchingSeasons(seasonNumber);
-    return {
-      startTimestamp: currentSeason[0],
-      endTimestamp: currentSeason[1],
-      maxTotalVouches: currentSeason[2],
-      totalVouches: currentSeason[3]
-    };
-  }
-
-  async hasAlreadyVouched(attester: string, recipient: string, schemaId: string, category: string, subcategory: string, platform: string): Promise<boolean> {
-    // Get current season info
-    const seasonInfo = await this.getCurrentSeason();
-    
-    // Prepare GraphQL query with converted bigint timestamps
-    const query = `
-      query Attestations($where: AttestationWhereInput) {
-        attestations(where: $where) {
-          attester
-          timeCreated
-          recipient
-        }
-      }
-    `;
-
-    const variables = {
-      where: {
-        AND: [
-          {
-            decodedDataJson: {
-              contains: ethers.encodeBytes32String(platform)
-            }
-          },
-          {
-            decodedDataJson: {
-              contains: ethers.encodeBytes32String(category)
-            }
-          },
-          {
-            decodedDataJson: {
-              contains: ethers.encodeBytes32String(subcategory)
-            }
-          },
-          {
-            timeCreated: {
-              gte: Number(seasonInfo.startTimestamp)
-            }
-          },
-          {
-            timeCreated: {
-              lte: Number(seasonInfo.endTimestamp)
-            }
-          }
-        ],
-        schemaId: {
-          equals: schemaId
-        },
-        revoked: {
-          equals: false
-        },
-        attester: {
-          equals: ethers.getAddress(attester)
-        },
-        recipient: {
-          equals: ethers.getAddress(recipient)
-        }
-      }
-    };
-
-    try {
-      const response = await axios.post(EAS_CONFIG.GRAPHQL_URL, {
-        query,
-        variables
-      });
-      const attestations: Attestation[] = response.data.data.attestations;
-      return attestations.length > 0;
-    } catch (error) {
-      console.error('Error checking attestations:', error);
-      throw new BadRequestException('Failed to check attestation status');
-    }
   }
 }
