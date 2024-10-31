@@ -1,21 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { POD, podEntriesFromSimplifiedJSON } from "@pcd/pod";
 import { Zupass, siteName } from 'src/config/siteConfig';
-import { AuthTokenClaims } from '@privy-io/server-auth';
+// import { AuthTokenClaims } from '@privy-io/server-auth';
 import {
-  boundConfigFromJSON,
   boundConfigToJSON,
-  gpcArtifactDownloadURL,
-  gpcBindConfig,
-  GPCProofConfig,
-  GPCProofInputs,
-  gpcProve,
   gpcVerify,
-  proofConfigToJSON,
-  revealedClaimsFromJSON,
   revealedClaimsToJSON
 } from "@pcd/gpc";
-import path from 'path';
+import * as path from 'path';
 
 @Injectable()
 export class PodService {
@@ -53,9 +45,9 @@ export class PodService {
     const signerPublicKey = revealedClaims.pods.ticket.signerPublicKey;
     const eventId = revealedClaims.pods.ticket.entries.eventId.value;
 
-    const GPC_ARTIFACTS_PATH = path.join(
-      __dirname,
-      "../../../node_modules/@pcd/proto-pod-gpc-artifacts"
+    const GPC_ARTIFACTS_PATH = path.resolve(
+      process.cwd(),
+      "node_modules/@pcd/proto-pod-gpc-artifacts"
     );
     console.log("Local artifacts path", GPC_ARTIFACTS_PATH);
     // For now, just logging the values
