@@ -44,9 +44,9 @@ export class PodController {
   }
 
   @Post('verify-proof')
-  // @UseGuards(PrivyGuard)
+  @UseGuards(PrivyGuard)
   async verifyProof(
-    // @Req() req: PrivyRequest,
+    @Req() req: PrivyRequest,
     @Body() proofData: ProofData
   ) {
     return this.podService.verifyProof(proofData);
