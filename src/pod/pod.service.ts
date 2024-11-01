@@ -40,7 +40,7 @@ export class PodService {
     }
   }
 
-  async verifyProof(proofData: any): Promise<string> {
+  async verifyProof(proofData: any): Promise<{ attestationUID: string; nullifier: string }> {
     const { proof, boundConfig, revealedClaims, commitment, wallet } = proofData;
     // Extract the required values
     const circuitIdentifier = boundConfig.circuitIdentifier;
@@ -90,7 +90,10 @@ export class PodService {
       );
       
       console.log('Attestation created successfully:', attestationUID);
-      return attestationUID;
+      return {
+        attestationUID,
+        nullifier: nullifierHash
+      };
     } catch (error) {
       console.error('Error creating attestation:', error);
       throw new Error('Failed to create attestation');
