@@ -8,9 +8,12 @@ import {
   revealedClaimsToJSON
 } from "@pcd/gpc";
 import * as path from 'path';
-
+import { HandleAttestService } from '../pcds/handleAttest.service';
+import { ethers } from 'ethers';
 @Injectable()
 export class PodService {
+  constructor(private readonly handleAttestService: HandleAttestService) {}
+
   private readonly ZUPASS_SIGNING_KEY = process.env.ZUPASS_SIGNING_KEY;
 
   async createOrRetrievePodpcd( wallet: string, AgoraScore: string): Promise<string> {
@@ -37,24 +40,16 @@ export class PodService {
     }
   }
 
-  async verifyProof(proofData: any): Promise<void> {
-    const { proof, boundConfig, revealedClaims } = proofData;
-    
+  async verifyProof(proofData: any): Promise<string> {
+    const { proof, boundConfig, revealedClaims, commitment, wallet } = proofData;
     // Extract the required values
     const circuitIdentifier = boundConfig.circuitIdentifier;
     const signerPublicKey = revealedClaims.pods.ticket.signerPublicKey;
     const eventId = revealedClaims.pods.ticket.entries.eventId.value;
-
     const GPC_ARTIFACTS_PATH = path.resolve(
       process.cwd(),
       "node_modules/@pcd/proto-pod-gpc-artifacts"
     );
-    console.log("Local artifacts path", GPC_ARTIFACTS_PATH);
-    // For now, just logging the values
-    console.log('Circuit Identifier:', circuitIdentifier);
-    console.log('Signer Public Key:', signerPublicKey);
-    console.log('Event ID:', eventId);
-    console.log('Proof:', proof);
 
 
     const isValid = await gpcVerify(
@@ -68,48 +63,39 @@ export class PodService {
       throw new Error("Proof didn't verify!");
     }
 
+    // Verifiers should also always check that the PODs are signed by a trusted
+    // authority with a known public key.
+    const knownPublicKey = 'YwahfUdUYehkGMaWh0+q3F8itx2h8mybjPmt8CmTJSs'
+    if (revealedClaims.pods.ticket.signerPublicKey !== knownPublicKey) {
+      throw new Error("Unexpected signer.");
+    }
 
-    
-  // Note that `gpcVerify` only checks that the inputs are valid with
-  // respect to each other.  You still need to check that everything is as
-  // you expect.
+    try {
 
-  // If the config isn't hard-coded in the verifier, you need to ensure it's
-  // suitable.  The canonicalization which happens in binding means you can
-  // compare bound configs using a simple deep equals.
-  // if (!_.isEqual(boundConfig, manualBoundConfig)) {
-  //   throw new Error("Unexpected configuration.");
-  // }
+      const nullifierHash = ethers.keccak256(
+        ethers.concat([
+          ethers.toUtf8Bytes(commitment),
+          ethers.toUtf8Bytes(eventId)
+        ])
+      ).slice(0, 66)
 
-  // Verifiers should also always check that the PODs are signed by a trusted
-  // authority with a known public key.
-  const knownPublicKey = 'YwahfUdUYehkGMaWh0+q3F8itx2h8mybjPmt8CmTJSs'
-  if (revealedClaims.pods.ticket.signerPublicKey !== knownPublicKey) {
-    throw new Error("Unexpected signer.");
-  }
+      const attestationUID = await this.handleAttestService.handleAttest(
+        wallet,
+        nullifierHash,
+        'SocialStereo',
+        'Music',
+        "ISSUER",
+        'Ticket',
+        'Devcon'
+      );
+      
+      console.log('Attestation created successfully:', attestationUID);
+      return attestationUID;
+    } catch (error) {
+      console.error('Error creating attestation:', error);
+      throw new Error('Failed to create attestation');
+    }
 
-  // Finally the verifier can look at the revealed claims and decide what to do
-  // with them.
-  console.log(
-    "revealedClaims",
-    revealedClaims
-  );
- //////////////////////////////////////////////////////////////////////////////
-  // The proof outputs can be serialized for transmission between prover and
-  // verifier.
-  //////////////////////////////////////////////////////////////////////////////
 
-  // Proof config (bound or unbound) and revealed claims can be converted to
-  // a JSON-compatible form to be serialized.
-  // The proof itself is already a simple JSON object.
-  // In most cases, they'd be sent from prover to verifier across the network,
-  // so the prover would serialize them something like this:
-  const serializedGPC = JSON.stringify({
-    proof: proof,
-    config: boundConfigToJSON(boundConfig),
-    revealed: revealedClaimsToJSON(revealedClaims)
-  });
-
-console.log("serializedGPC", serializedGPC);
   }
 }
