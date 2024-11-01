@@ -84,7 +84,7 @@ export class PodService {
         nullifierHash,
         'SocialStereo',
         'Music',
-        "ISSUER",
+        "Stamp",
         'Ticket',
         'Devcon'
       );
