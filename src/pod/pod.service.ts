@@ -40,7 +40,7 @@ export class PodService {
     }
   }
 
-  async verifyProof(proofData: any): Promise<{ attestationUID: string; nullifier: string }> {
+  async verifyProof(proofData: any): Promise<{ attestationUID: string; nullifier: string } | { nullifier: string; status: string; message: string }> {
     const { proof, boundConfig, revealedClaims, commitment, wallet } = proofData;
     // Extract the required values
     const circuitIdentifier = boundConfig.circuitIdentifier;
@@ -71,15 +71,14 @@ export class PodService {
     }
 
     try {
-
       const nullifierHash = ethers.keccak256(
         ethers.concat([
           ethers.toUtf8Bytes(commitment),
           ethers.toUtf8Bytes(eventId)
         ])
-      ).slice(0, 66)
+      ).slice(0, 66);
 
-      const attestationUID = await this.handleAttestService.handleAttest(
+      const result = await this.handleAttestService.handleAttest(
         wallet,
         nullifierHash,
         'SocialStereo',
@@ -89,16 +88,22 @@ export class PodService {
         'Devcon'
       );
       
-      console.log('Attestation created successfully:', attestationUID);
+      if ('status' in result) {
+        return {
+          nullifier: nullifierHash,
+          status: result.status,
+          message: result.message
+        };
+      }
+
+      console.log('Attestation created successfully:', result.attestationUID);
       return {
-        attestationUID,
+        attestationUID: result.attestationUID,
         nullifier: nullifierHash
       };
     } catch (error) {
       console.error('Error creating attestation:', error);
       throw new Error('Failed to create attestation');
     }
-
-
   }
 }

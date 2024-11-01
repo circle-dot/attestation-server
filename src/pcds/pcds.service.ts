@@ -135,7 +135,7 @@ export class PcdsService {
               const credentialType = productName; 
               const platform = EAS_CONFIG.PLATFORM;
 
-              const attestationUID = await this.handleAttestService.handleAttest(
+              const result = await this.handleAttestService.handleAttest(
                 recipient,
                 nullifier,
                 category,
@@ -145,16 +145,26 @@ export class PcdsService {
                 platform
               );
 
-              // Update the response with all the requested fields
-              response.attestationUID = attestationUID;
-              response.productId = productId;
-              response.eventId = eventId;
-              response.nullifier = nullifier;
-              response.issuer = issuer;
-              response.category = category;
-              response.subcategory = subcategory;
-              response.platform = platform;
-              console.log("Attestation created successfully:", attestationUID);
+              if ('status' in result) {
+                // This is an error response
+                response = {
+                  error: result.message,
+                  status: 400, // or whatever status code you want for "already registered"
+                  productId,
+                  eventId
+                };
+              } else {
+                // This is a success response
+                response.attestationUID = result.attestationUID;
+                response.productId = productId;
+                response.eventId = eventId;
+                response.nullifier = nullifier;
+                response.issuer = issuer;
+                response.category = category;
+                response.subcategory = subcategory;
+                response.platform = platform;
+                console.log("Attestation created successfully:", result.attestationUID);
+              }
             } catch (attestError) {
               console.error("Error creating attestation:", attestError);
               response = { 

@@ -13,7 +13,7 @@ export class HandleAttestService {
     issuer: string,
     credentialType: string,
     platform: string
-  ) {
+  ): Promise<{ attestationUID: string } | { status: string; message: string }> {
     const easContractAddress = EAS_CONFIG.EAS_CONTRACT_ADDRESS;
     const schemaUID = EAS_CONFIG.PRETRUST_SCHEMA;
     const eas = new EAS(easContractAddress);
@@ -56,16 +56,13 @@ export class HandleAttestService {
       const newAttestationUID = await tx.wait();
       console.log('New attestation UID:', newAttestationUID);
 
-      return newAttestationUID;
+      return { attestationUID: newAttestationUID };
     } catch (error) {
       console.error('Error in handleAttest:', error);
-      if (error.reason) {
-        throw new Error(`Smart contract error: ${error.reason}`);
-      } else if (error.message) {
-        throw new Error(`Attestation error: ${error.message}`);
-      } else {
-        throw new Error('Unknown error occurred during attestation');
+      if (error.reason === 'Already registered') {
+        return { status: 'ALREADY_REGISTERED', message: 'POD is already registered' };
       }
+      throw error;
     }
   }
 }
