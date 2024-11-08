@@ -193,39 +193,6 @@ export const whitelistedTickets: Record<
       ],
       eventId: "5074edf5-f079-4099-b036-22223c0c6995",
       eventName: "Devcon: Southeast Asia",
-      productId: "f124d21c-84fc-42e4-8f38-234f23412bc8",
-      productName: "🏮 Ethereum Lantern",
-    },
-    {
-      pcdType: "eddsa-ticket-pcd",
-      publicKey: [
-        "044e711fd3a1792a825aa896104da5276bbe710fd9b59dddea1aaf8d84535aaf",
-        "2b259329f0adf98c9b6cf2a11db7225fdcaa4f8796c61864e86154477da10663",
-      ],
-      eventId: "5074edf5-f079-4099-b036-22223c0c6995",
-      eventName: "Devcon: Southeast Asia",
-      productId: "27bbc1f3-79fe-48a2-b50f-43113ac4ecc5",
-      productName: "🦄 Deva Herbal Inhaler",
-    },
-    {
-      pcdType: "eddsa-ticket-pcd",
-      publicKey: [
-        "044e711fd3a1792a825aa896104da5276bbe710fd9b59dddea1aaf8d84535aaf",
-        "2b259329f0adf98c9b6cf2a11db7225fdcaa4f8796c61864e86154477da10663",
-      ],
-      eventId: "5074edf5-f079-4099-b036-22223c0c6995",
-      eventName: "Devcon: Southeast Asia",
-      productId: "d56f0781-401c-4b7b-9f05-9da601518b29",
-      productName: "👖 Ethereum Pajama Pants",
-    },
-    {
-      pcdType: "eddsa-ticket-pcd",
-      publicKey: [
-        "044e711fd3a1792a825aa896104da5276bbe710fd9b59dddea1aaf8d84535aaf",
-        "2b259329f0adf98c9b6cf2a11db7225fdcaa4f8796c61864e86154477da10663",
-      ],
-      eventId: "5074edf5-f079-4099-b036-22223c0c6995",
-      eventName: "Devcon: Southeast Asia",
       productId: "45b07aad-b4cf-4f0e-861b-683ba3de49bd",
       productName: "Protocol Guild / Merge Pass Holders",
     },
@@ -448,28 +415,6 @@ export const whitelistedTickets: Record<
       eventName: "Devcon: Southeast Asia",
       productId: "1bbc0ec1-5be9-43ff-acd3-d4ca794f814f",
       productName: "zkPassport Local Builder",
-    },
-    {
-      pcdType: "eddsa-ticket-pcd",
-      publicKey: [
-        "044e711fd3a1792a825aa896104da5276bbe710fd9b59dddea1aaf8d84535aaf",
-        "2b259329f0adf98c9b6cf2a11db7225fdcaa4f8796c61864e86154477da10663",
-      ],
-      eventId: "5074edf5-f079-4099-b036-22223c0c6995",
-      eventName: "Devcon: Southeast Asia",
-      productId: "696ef282-b538-4ccc-b819-74a96be13582",
-      productName: '👕 T-Shirt: "Permissionless Innovation Reunion Tour"',
-    },
-    {
-      pcdType: "eddsa-ticket-pcd",
-      publicKey: [
-        "044e711fd3a1792a825aa896104da5276bbe710fd9b59dddea1aaf8d84535aaf",
-        "2b259329f0adf98c9b6cf2a11db7225fdcaa4f8796c61864e86154477da10663",
-      ],
-      eventId: "5074edf5-f079-4099-b036-22223c0c6995",
-      eventName: "Devcon: Southeast Asia",
-      productId: "a374ebe8-8d2d-46b2-a582-525aca266e80",
-      productName: '⛈️ Rain Coat: "Make Ethereum Cypherpunk"',
     },
     {
       pcdType: "eddsa-ticket-pcd",

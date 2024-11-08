@@ -23,7 +23,6 @@ export class PcdsService {
         attestationUID?: string;
         productId?: string;
         eventId?: string;
-        // Add new fields to the response type
         issuer?: string;
         category?: string;
         subcategory?: string;
