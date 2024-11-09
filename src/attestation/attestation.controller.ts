@@ -22,6 +22,8 @@ export class AttestationController {
         throw error;
       } else if (error instanceof BadRequestException) {
         throw error;
+      } else if (error.reason === "Max vouches reach!") {
+        throw new BadRequestException('Maximum number of vouches reached for this user');
       } else {
         console.error('Error creating attestation:', error);
         throw new InternalServerErrorException('Failed to create attestation');
