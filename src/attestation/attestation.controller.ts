@@ -1,5 +1,6 @@
 import { Controller, Post, Body, Headers, UnauthorizedException, BadRequestException, InternalServerErrorException, Get, Query } from '@nestjs/common';
 import { AttestationService } from './attestation.service';
+import { StampAttestationRequest } from './attestation.service';
 
 @Controller('attestation')
 export class AttestationController {
@@ -61,6 +62,27 @@ export class AttestationController {
       } else {
         console.error('Error revoking attestation:', error);
         throw new InternalServerErrorException('Failed to revoke attestation');
+      }
+    }
+  }
+
+  @Post('stamp')
+  async handleStampAttestation(
+    @Body() body: StampAttestationRequest
+  ) {
+    console.log('[Stamp Attestation] Received request:', JSON.stringify(body, null, 2));
+    
+    try {
+      const result = await this.attestationService.handleStampAttestation(body);
+      console.log('[Stamp Attestation] Success result:', JSON.stringify(result, null, 2));
+      return result;
+    } catch (error) {
+      console.error('[Stamp Attestation] Error:', error);
+      if (error instanceof BadRequestException) {
+        throw error;
+      } else {
+        console.error('[Stamp Attestation] Internal error details:', error);
+        throw new InternalServerErrorException('Failed to handle stamp attestation');
       }
     }
   }
