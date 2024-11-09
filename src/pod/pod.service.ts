@@ -77,7 +77,7 @@ export class PodService {
           ethers.toUtf8Bytes(eventId)
         ])
       ).slice(0, 66);
-
+      // This values are for devcon only.
       const result = await this.handleAttestService.handleAttest(
         wallet,
         nullifierHash,
@@ -104,6 +104,24 @@ export class PodService {
     } catch (error) {
       console.error('Error creating attestation:', error);
       throw new Error('Failed to create attestation');
+    }
+  }
+
+
+  async createPod(entries: Record<string, any> = {}): Promise<string> {
+    if (!this.ZUPASS_SIGNING_KEY) {
+      throw new Error('Server configuration error: Signing key not set');
+    }
+    
+    try {
+      const pod = POD.sign(
+        podEntriesFromSimplifiedJSON(JSON.stringify(entries)),
+        this.ZUPASS_SIGNING_KEY
+      );
+      return pod.serialize();
+    } catch (error) {
+      console.error('Error creating POD:', error);
+      throw new Error('Error creating POD');
     }
   }
 }
