@@ -137,7 +137,7 @@ export class AttestationService {
     }
 
     const results = {
-      successful: [] as string[],
+      successful: [] as { stampId: string; attestationUID: string }[],
       failed: [] as { stampId: string; error: string }[]
     };
 
@@ -159,7 +159,10 @@ export class AttestationService {
             error: 'Already registered' 
           });
         } else {
-          results.successful.push(stampId);
+          results.successful.push({
+            stampId,
+            attestationUID: result.attestationUID
+          });
         }
       } catch (error) {
         console.error(`[handleStampAttestation] Error processing stamp ${stampId}:`, error);
@@ -232,12 +235,10 @@ export class AttestationService {
     eas.connect(signer);
 
     
-    // TODO: Add the schema for the attestation
     const schemaEncoder = new SchemaEncoder(
       'bytes32 stampId, string name, string description, string imageUrl'
     );
 
-    // TODO: Add the values for nullifier, category, subcategory, issuer, credentialType and platform
     const encodedData = schemaEncoder.encodeData([
       { name: 'stampId', value: ethers.encodeBytes32String(stampId), type: 'bytes32' },
       { name: 'name', value: stampDetails.title, type: 'string' },

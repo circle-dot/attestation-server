@@ -68,9 +68,16 @@ export class AttestationController {
 
   @Post('stamp')
   async handleStampAttestation(
+    @Headers('x-api-key') apiKey: string,
     @Body() body: StampAttestationRequest
   ) {
     console.log('[Stamp Attestation] Received request:', JSON.stringify(body, null, 2));
+    
+    // Check API key
+    if (!apiKey || apiKey !== process.env.API_KEY) {
+      console.warn('[Stamp Attestation] Invalid or missing API key');
+      throw new UnauthorizedException('Invalid or missing API key');
+    }
     
     try {
       const result = await this.attestationService.handleStampAttestation(body);
